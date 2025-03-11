@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  besu-node-1:
+    image: hyperledger/besu:latest
+    container_name: IBFT-besu-node-1
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-1/data:/besu/data 
+    ports: 
+      - "8549:8549"
+      - "30308:30308"
+      - "9549:9549"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --permissions-nodes-config-file-enabled 
+      --permissions-accounts-config-file-enabled 
+      --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --p2p-port=30308 
+      --rpc-http-port=8549 
+      --profile=ENTERPRISE --min-gas-price=1000 
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9549
+
+    networks:
+      ibft-net:
+        ipv4_address: 192.168.2.2
+    
+
+  besu-node-2:
+    image: hyperledger/besu:latest
+    container_name: IBFT-besu-node-2
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-2/data:/besu/data
+    ports:
+      - "8550:8550"
+      - "30309:30309"
+      - "9550:9550"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --permissions-nodes-config-file-enabled 
+      --permissions-accounts-config-file-enabled 
+      --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --p2p-port=30309 
+      --rpc-http-port=8550 
+      --bootnodes=enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@127.0.0.1:30308 
+      --profile=ENTERPRISE --min-gas-price=1000
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9550
+
+    depends_on: 
+      - besu-node-1
+    networks:
+      ibft-net:
+        ipv4_address: 192.168.2.3
+
+  besu-node-3:
+    image: hyperledger/besu:latest
+    container_name: IBFT-besu-node-3
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-3/data:/besu/data
+    ports:
+      - "8551:8551"
+      - "30310:30310"
+      - "9551:9551"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --permissions-nodes-config-file-enabled 
+      --permissions-accounts-config-file-enabled 
+      --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --p2p-port=30310 
+      --rpc-http-port=8551 
+      --bootnodes=enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@127.0.0.1:30308
+      --profile=ENTERPRISE --min-gas-price=1000
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9551
+
+    depends_on:
+      - besu-node-1
+    networks:
+      ibft-net:
+        ipv4_address: 192.168.2.4
+
+  besu-node-4:
+    image: hyperledger/besu:latest
+    container_name: IBFT-besu-node-4
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-4/data:/besu/data
+    ports:
+      - "8552:8552"
+      - "30311:30311"
+      - "9552:9552"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --permissions-nodes-config-file-enabled 
+      --permissions-accounts-config-file-enabled 
+      --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --p2p-port=30311 
+      --rpc-http-port=8552 
+      --bootnodes=enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@127.0.0.1:30308
+      --profile=ENTERPRISE --min-gas-price=1000
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9552
+
+    depends_on:
+      - besu-node-1
+    networks:
+      ibft-net:
+        ipv4_address: 192.168.2.5
+
+networks:
+  ibft-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24

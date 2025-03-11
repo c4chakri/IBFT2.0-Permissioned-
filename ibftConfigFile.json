@@ -1,0 +1,36 @@
+{
+    "genesis": {
+      "config": {
+        "chainId": 69196,
+        "berlinBlock": 0,
+        "ibft2": {
+          "blockperiodseconds": 5,
+          "epochlength": 30000,
+          "requesttimeoutseconds": 4
+        }
+      },
+      "nonce": "0x0",
+      "timestamp": "0x58ee40ba",
+      "gasLimit": "0x1fffffffffffff",
+      "difficulty": "0x1",
+      "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
+      "coinbase": "0x0000000000000000000000000000000000000000",
+      "alloc": {
+        "0x3171364238D40b99D95B1579539f785309b83C20": {
+          "balance": "0xad78ebc5ac6200000"
+        },
+        "0xcd801F16F87841444040b2F2A93bb9235053e00c": {
+          "balance": "90000000000000000000000"
+        },
+        "0x10C01177B6F7DC0C31eDe50aa38A91B74ce0F081": {
+          "balance": "90000000000000000000000"
+        }
+      }
+    },
+    "blockchain": {
+      "nodes": {
+        "generate": true,
+        "count": 4
+      }
+    }
+  }
