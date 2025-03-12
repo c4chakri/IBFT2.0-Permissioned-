@@ -1,11 +1,16 @@
-# # Use the official Besu image as the base
-# FROM hyperledger/besu:latest
+# Use Hyperledger Besu official image
+FROM hyperledger/besu:latest
 
-# # Copy a custom script into the container
-# COPY custom-script.sh /besu/custom-script.sh
+# Set working directory inside the container
+WORKDIR /opt/besu
 
-# # Make the script executable
-# RUN chmod +x /besu/custom-script.sh
+# Copy configuration files into the container
+COPY ./config /opt/besu/config
+COPY ./networkFiles /opt/besu/networkFiles
 
-# # Set the script to run when the container starts
-# ENTRYPOINT ["/besu/custom-script.sh"]
+# Expose shifted ports (since another QBFT is running on default ports)
+EXPOSE 8549 8550 30308 30308/udp 9549
+
+# Command to start the Besu node
+ENTRYPOINT ["besu"]
+CMD ["--config-file=/opt/besu/config/config.toml"]
