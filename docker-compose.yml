@@ -57,7 +57,6 @@ services:
     networks:
       ibft-net:
         ipv4_address: 192.168.2.3
-
   besu-node-3:
     image: hyperledger/besu:latest
     container_name: IBFT-besu-node-3
@@ -79,7 +78,6 @@ services:
       --host-allowlist="*" --rpc-http-cors-origins="all" 
       --p2p-port=30310 
       --rpc-http-port=8551 
-      --bootnodes=enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@127.0.0.1:30308
       --profile=ENTERPRISE --min-gas-price=1000
       --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9551
 
@@ -88,7 +86,6 @@ services:
     networks:
       ibft-net:
         ipv4_address: 192.168.2.4
-
   besu-node-4:
     image: hyperledger/besu:latest
     container_name: IBFT-besu-node-4
@@ -110,7 +107,6 @@ services:
       --host-allowlist="*" --rpc-http-cors-origins="all" 
       --p2p-port=30311 
       --rpc-http-port=8552 
-      --bootnodes=enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@127.0.0.1:30308
       --profile=ENTERPRISE --min-gas-price=1000
       --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9552
 
@@ -119,105 +115,113 @@ services:
     networks:
       ibft-net:
         ipv4_address: 192.168.2.5
-  besu-addP-node1:
+  besu-1addP-node1:
     image: curlimages/curl:latest
+    depends_on:
+      - besu-node-1
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - >
-          sleep 10 && curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
+          while ! curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
           "params":[[
           "enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@192.168.2.2:30308",
           "enode://933713a6513080f10e0b91e036a4d72efb49143a36ff968a7c3cf4b06fed09b54bb70c86422db3331a277af6206fbf22cf4b01e9423c342a17cd505fd0adf290@192.168.2.3:30309",
           "enode://bffc8d2a7eb54dc7fb953a18480d4b00889863f76215ed9ef92f2ded09d48b210a2d6421e238b7aa758d69462a6803aec4b29a7ea3713133223f99befe3e14ff@192.168.2.4:30310",
           "enode://1cd6036d1b4604dc97a21dd29f0591fbdc200b076fa9fc73a05fc1bed4f8f01842b27040b608f826e1bed819abf42be0b6095a5e5a5c7e1671a09a1db3e85f05@192.168.2.5:30311"
-          ]],"id":1}' http://192.168.2.2:8549/
+          ]],"id":1}' http://192.168.2.2:8549/; do echo "Waiting for Besu to be ready..."; sleep 5; done
     networks:
       - ibft-net
-  besu-addP-node2:
+  besu-2addP-node2:
     image: curlimages/curl:latest
+    depends_on:
+      - besu-node-2
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - >
-          sleep 10 && curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
+          while ! curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
           "params":[[
           "enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@192.168.2.2:30308",
           "enode://933713a6513080f10e0b91e036a4d72efb49143a36ff968a7c3cf4b06fed09b54bb70c86422db3331a277af6206fbf22cf4b01e9423c342a17cd505fd0adf290@192.168.2.3:30309",
           "enode://bffc8d2a7eb54dc7fb953a18480d4b00889863f76215ed9ef92f2ded09d48b210a2d6421e238b7aa758d69462a6803aec4b29a7ea3713133223f99befe3e14ff@192.168.2.4:30310",
           "enode://1cd6036d1b4604dc97a21dd29f0591fbdc200b076fa9fc73a05fc1bed4f8f01842b27040b608f826e1bed819abf42be0b6095a5e5a5c7e1671a09a1db3e85f05@192.168.2.5:30311"
-          ]],"id":1}' http://192.168.2.3:8550/
+          ]],"id":1}' http://192.168.2.3:8550/; do echo "Waiting for Besu to be ready..."; sleep 5; done
     networks:
       - ibft-net
-  besu-addP-node3:
+  besu-3addP-node3:
     image: curlimages/curl:latest
+    depends_on:
+      - besu-node-3
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - >
-          sleep 10 && curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
+          while ! curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
           "params":[[
           "enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@192.168.2.2:30308",
           "enode://933713a6513080f10e0b91e036a4d72efb49143a36ff968a7c3cf4b06fed09b54bb70c86422db3331a277af6206fbf22cf4b01e9423c342a17cd505fd0adf290@192.168.2.3:30309",
           "enode://bffc8d2a7eb54dc7fb953a18480d4b00889863f76215ed9ef92f2ded09d48b210a2d6421e238b7aa758d69462a6803aec4b29a7ea3713133223f99befe3e14ff@192.168.2.4:30310",
           "enode://1cd6036d1b4604dc97a21dd29f0591fbdc200b076fa9fc73a05fc1bed4f8f01842b27040b608f826e1bed819abf42be0b6095a5e5a5c7e1671a09a1db3e85f05@192.168.2.5:30311"
-          ]],"id":1}' http://192.168.2.4:8551/
+          ]],"id":1}' http://192.168.2.4:8551/; do echo "Waiting for Besu to be ready..."; sleep 5; done
     networks:
       - ibft-net
-  besu-addP-node4:
+  besu-4addP-node4:
     image: curlimages/curl:latest
+    depends_on:
+      - besu-node-4
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - >
-          sleep 10 && curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
+          while ! curl -X POST --data '{"jsonrpc":"2.0","method":"perm_addNodesToAllowlist",
           "params":[[
           "enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@192.168.2.2:30308",
           "enode://933713a6513080f10e0b91e036a4d72efb49143a36ff968a7c3cf4b06fed09b54bb70c86422db3331a277af6206fbf22cf4b01e9423c342a17cd505fd0adf290@192.168.2.3:30309",
           "enode://bffc8d2a7eb54dc7fb953a18480d4b00889863f76215ed9ef92f2ded09d48b210a2d6421e238b7aa758d69462a6803aec4b29a7ea3713133223f99befe3e14ff@192.168.2.4:30310",
           "enode://1cd6036d1b4604dc97a21dd29f0591fbdc200b076fa9fc73a05fc1bed4f8f01842b27040b608f826e1bed819abf42be0b6095a5e5a5c7e1671a09a1db3e85f05@192.168.2.5:30311"
-          ]],"id":1}' http://192.168.2.5:8552/
+          ]],"id":1}' http://192.168.2.5:8552/;do echo "Waiting for Besu to be ready..."; sleep 2; done
     networks:
       - ibft-net
-  
   besu-n2adminP:
     image: curlimages/curl:latest
     depends_on:
-      - besu-addP-node2
+      - besu-node-2
+      - besu-node-1
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - >
-          sleep 5 && curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
+          while ! curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
           "params":["enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@192.168.2.2:30308"],"id":1}' 
-          http://192.168.2.3:8550/
+          http://192.168.2.3:8550/; do echo "Waiting for Besu to be ready..."; sleep 5; done
     networks:
       - ibft-net
   besu-n3adminP:
     image: curlimages/curl:latest
     depends_on:
-      - besu-addP-node2
+      - besu-node-3
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - >
-          sleep 5 && curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
+          while ! curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
           "params":["enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@192.168.2.2:30308"],"id":1}' 
           http://192.168.2.4:8551/ &&
           curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
-          "params":["enode://933713a6513080f10e0b91e036a4d72efb49143a36ff968a7c3cf4b06fed09b54bb70c86422db3331a277af6206fbf22cf4b01e9423c342a17cd505fd0adf290@192.16.2.3:30309"],"id":1}' 
-          http://192.168.2.4:8551/
+          "params":["enode://933713a6513080f10e0b91e036a4d72efb49143a36ff968a7c3cf4b06fed09b54bb70c86422db3331a277af6206fbf22cf4b01e9423c342a17cd505fd0adf290@192.168.2.3:30309"],"id":1}' 
+          http://192.168.2.4:8551/; do echo "Waiting for Besu to be ready..."; sleep 5; done
     networks:
       - ibft-net
   besu-n4adminP:
     image: curlimages/curl:latest
     depends_on:
-      - besu-addP-node2
+      - besu-node-4
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - >
-          sleep 5 && curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
+          while ! curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
           "params":["enode://3e45d2320bfde3eab683fbbd3f38171ca206f047b755fd41b646e5021ab5b6cce6074d2c1eb74c5db2837e9ac34d2ad6a88e69e175050b65244f601b891fbf69@192.168.2.2:30308"],"id":1}' 
           http://192.168.2.5:8552/ &&
           curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
@@ -225,7 +229,7 @@ services:
           http://192.168.2.5:8552/ &&
           curl -X POST --data '{"jsonrpc":"2.0","method":"admin_addPeer",
           "params":["enode://bffc8d2a7eb54dc7fb953a18480d4b00889863f76215ed9ef92f2ded09d48b210a2d6421e238b7aa758d69462a6803aec4b29a7ea3713133223f99befe3e14ff@192.168.2.4:30310"],"id":1}' 
-          http://192.168.2.5:8552/
+          http://192.168.2.5:8552/; do echo "Waiting for Besu to be ready..."; sleep 5; done
     networks:
       - ibft-net
 networks:
@@ -234,3 +238,4 @@ networks:
     ipam:
       config:
         - subnet: 192.168.2.0/24
+          gateway: 192.168.2.1
