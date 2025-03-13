@@ -19,7 +19,7 @@ services:
       --permissions-nodes-config-file-enabled 
       --permissions-accounts-config-file-enabled 
       --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
-      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --host-allowlist="*" --rpc-http-cors-origins="*" 
       --p2p-port=30308 
       --rpc-http-port=8549 
       --profile=ENTERPRISE --min-gas-price=1000 
@@ -46,7 +46,7 @@ services:
       --permissions-nodes-config-file-enabled 
       --permissions-accounts-config-file-enabled 
       --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
-      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --host-allowlist="*" --rpc-http-cors-origins="*" 
       --p2p-port=30309 
       --rpc-http-port=8550 
       --profile=ENTERPRISE --min-gas-price=1000
@@ -72,7 +72,7 @@ services:
       --permissions-nodes-config-file-enabled 
       --permissions-accounts-config-file-enabled 
       --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
-      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --host-allowlist="*" --rpc-http-cors-origins="*" 
       --p2p-port=30310 
       --rpc-http-port=8551 
       --profile=ENTERPRISE --min-gas-price=1000
@@ -99,7 +99,7 @@ services:
       --permissions-nodes-config-file-enabled 
       --permissions-accounts-config-file-enabled 
       --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT 
-      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --host-allowlist="*" --rpc-http-cors-origins="*" 
       --p2p-port=30311 
       --rpc-http-port=8552 
       --profile=ENTERPRISE --min-gas-price=1000
